@@ -1,27 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-/* import App from './App';*/
+import App from './components/app/';
 import reportWebVitals from './reportWebVitals';
 
-const Header = () => <h2>Hello World!</h2>,
-      Field = () => <input type="text" placeholder="Type here"/>,
-      Btn = () => <button/>;
-
-const App = () => {
-  return (
-    <div>
-      <Header/>
-      <Field/>
-      <Btn/>
-    </div> 
-  )
-}
 
 
 ReactDOM.render(<App/>, document.getElementById('root'));
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
 reportWebVitals();  
