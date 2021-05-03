@@ -7,7 +7,7 @@ const AppHeader = () => {
             <h1>Ivan Dulin</h1>
             <h2>5 записей, из них понравилось 0</h2>
         </div>
-    );
+    )
 }
 
 export default AppHeader;

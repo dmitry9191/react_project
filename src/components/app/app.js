@@ -9,7 +9,7 @@ import './app.css';
 
 const App = () => {
     return (
-        <div>
+        <div className="app">
             <AppHeader/>
             <div className="search-panel d-flex">
                 <SearchPanel/>
@@ -18,7 +18,7 @@ const App = () => {
             <PostList/>
             <PostAddForm/>
         </div>
-    );
+    )
 }
 
 export default App;
