@@ -21,7 +21,8 @@ export default class App extends Component {
                 {label: "I need a break!", important: false, like: false, id: nextId()}
             ],
 
-        term: ''
+        term: '',
+        filter: 'all'
         }
 
 
@@ -30,6 +31,7 @@ export default class App extends Component {
         this.onToggleImportant = this.onToggleImportant.bind(this);
         this.onToggleLiked = this.onToggleLiked.bind(this);
         this.onUpdateSearch = this.onUpdateSearch.bind(this);
+        this.onFilterSelect = this.onFilterSelect.bind(this);
     }
 
     deleteItem(id) {
@@ -57,11 +59,11 @@ export default class App extends Component {
         })
     }
 
-    onToggleImportant(id) {
+    setStateChanger(id, property) {
         this.setState(({data}) => {
             const index = data.findIndex(elem => elem.id === id);
             const old = data[index];
-            const newItem = {...old, important: !old.important}; // перезаписываем значение important которое было в old
+            const newItem = {...old, [property]: !old[property]}; // перезаписываем значение important которое было в old
 
             const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
 
@@ -71,18 +73,12 @@ export default class App extends Component {
         })
     }
 
+    onToggleImportant(id) {
+        this.setStateChanger(id, 'important');
+    }
+
     onToggleLiked(id) {
-        this.setState(({data}) => {
-            const index = data.findIndex(elem => elem.id === id);
-            const old = data[index];
-            const newItem = {...old, like: !old.like}; // перезаписываем значение like которое было в old
-
-            const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
-
-            return {
-                data: newArray
-            }
-        })
+        this.setStateChanger(id, 'like');
     }
 
     searchPost(items, term) {
@@ -95,16 +91,28 @@ export default class App extends Component {
         })
     }
 
+    filterPost(items, filter) {
+        if (filter === 'like') {
+            return items.filter(item => item.like);
+        } else {
+            return items;
+        }
+    }
+
     onUpdateSearch(term) {
         this.setState({term});
     }
 
+    onFilterSelect(filter) {
+        this.setState({filter});
+    }
+
     render() {
-        const {data, term} = this.state;
+        const {data, term, filter} = this.state;
         const liked = data.filter(item => item.like).length;
         const allPosts = data.length;
         
-        const visiblePosts = this.searchPost(data, term);
+        const visiblePosts = this.filterPost(this.searchPost(data, term), filter);
         
         return (
             <div className="app">
@@ -115,7 +123,10 @@ export default class App extends Component {
                     <SearchPanel
                         onUpdateSearch={this.onUpdateSearch}
                     />
-                    <PostStatusFilter/>
+                    <PostStatusFilter 
+                        filter={filter}
+                        onFilterSelect={this.onFilterSelect}
+                    />
                 </div>
                 <PostList posts={visiblePosts}
                           onDelete={this.deleteItem}
